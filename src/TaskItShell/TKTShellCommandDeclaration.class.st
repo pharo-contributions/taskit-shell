@@ -21,10 +21,20 @@ TKTShellCommandDeclaration >> argument: anArgument [
 	^ self
 ]
 
+{ #category : #'as yet unclassified' }
+TKTShellCommandDeclaration >> arguments [
+	^ arguments
+]
+
 { #category : #accessing }
 TKTShellCommandDeclaration >> arguments: aSetOfArguments [
 	arguments := aSetOfArguments asOrderedCollection.
 	^ self
+]
+
+{ #category : #'as yet unclassified' }
+TKTShellCommandDeclaration >> command [
+	^ command
 ]
 
 { #category : #accessing }
@@ -109,6 +119,11 @@ TKTShellCommandDeclaration >> option: anOption value: aValue [
 	^ self
 ]
 
+{ #category : #'as yet unclassified' }
+TKTShellCommandDeclaration >> options [
+	^ options
+]
+
 { #category : #accessing }
 TKTShellCommandDeclaration >> options: aSetOfOptions [
 	options := aSetOfOptions asOrderedCollection.
@@ -137,7 +152,7 @@ TKTShellCommandDeclaration >> schedule: aRunner [
 
 { #category : #accessing }
 TKTShellCommandDeclaration >> workingDirectory [
-	^ workingDirectory
+	^ workingDirectory ifNil: [ FileLocator workingDirectory resolve ]
 ]
 
 { #category : #accessing }
