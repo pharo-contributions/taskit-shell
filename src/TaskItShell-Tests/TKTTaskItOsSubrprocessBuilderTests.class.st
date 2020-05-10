@@ -13,7 +13,7 @@ TKTTaskItOsSubrprocessBuilderTests >> testTaskBlockShouldReturnACommandDeclarati
 	worker exceptionHandler: TKTTestExceptionHandler new.
 	worker start.
 	self
-		should: [ future := [ :spec | self ] asOSTask future: worker ]
+		should: [ (future := #' unknown ' command future: worker) synchronizeTimeout: 1 second  ]
 		raise: Error
 ]
 
@@ -37,7 +37,7 @@ TKTTaskItOsSubrprocessBuilderTests >> testTaskExecutionReturnsStdOutputAsResult 
 		redirectStdoutAsResult;
 		future.
 	
-	value := (future synchronizeTimeout: 1 second) lines.
+	value := (future synchronizeTimeout: 10 second) lines.
 	self
 		assert: value size > 1
 		description: ' expected at least one line as result of LS '.
