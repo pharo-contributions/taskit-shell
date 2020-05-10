@@ -48,12 +48,11 @@ TKTShellCommandDeclaration >> consoleCommand [
 ]
 
 { #category : #building }
-TKTShellCommandDeclaration >> createOSSubprocess [
-	^ OSSUnixSubprocess new
-		workingDirectory: self workingDirectory;
-		command: self commandPath;
-		arguments: (options , arguments) asArray;
-		yourself
+TKTShellCommandDeclaration >> evaluateOn: aCommandTask with: aTaskExecution [
+	^ TKTShellCommandExecutor default
+		evaluateOn: aCommandTask
+		with: aTaskExecution
+		with: self
 ]
 
 { #category : #convenience }

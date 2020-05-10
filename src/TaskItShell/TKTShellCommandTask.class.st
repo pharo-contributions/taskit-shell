@@ -22,27 +22,5 @@ TKTShellCommandTask >> command: aCommand [
 
 { #category : #private }
 TKTShellCommandTask >> evaluateOn: aTaskExecution [
-	^ self command isVerbose
-		ifTrue: [ self executeCommandStdoutConsole ]
-		ifFalse: [ self executeCommandStdoutAsResult ]
-]
-
-{ #category : #private }
-TKTShellCommandTask >> executeCommandStdoutAsResult [
-	self command createOSSubprocess
-		redirectStdout;
-		redirectStderr;
-		runAndWaitOnExitDo: [ :process :outString :errString | 
-			process isSuccess
-				ifTrue: [ ^ outString ]
-				ifFalse: [ Error signal: errString ] ]
-]
-
-{ #category : #private }
-TKTShellCommandTask >> executeCommandStdoutConsole [
-	self command createOSSubprocess
-		runAndWaitOnExitDo: [ :process :outString :errString | 
-			process isSuccess
-				ifTrue: [ ^ outString ]
-				ifFalse: [ Error signal: errString ] ]
+	^ self command evaluateOn: self with: aTaskExecution
 ]
