@@ -5,18 +5,6 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-TKTTaskItOsSubrprocessBuilderTests >> testTaskBlockReceivesACommandDeclaration [
-	" command: aSymbol options: anArrayOfOptions arguments: anArrayArguments"
-
-	| assertion future |
-	future := [ :spec | 
-	assertion := spec isKindOf: TKTShellCommandDeclaration.
-	spec ls ] asOSTask future.
-	future waitForCompletion: 1 second.
-	self assert: assertion description: 'Spec is not a command declaration'
-]
-
-{ #category : #'as yet unclassified' }
 TKTTaskItOsSubrprocessBuilderTests >> testTaskBlockShouldReturnACommandDeclarationOrFail [
 	" command: aSymbol options: anArrayOfOptions arguments: anArrayArguments"
 
@@ -33,9 +21,27 @@ TKTTaskItOsSubrprocessBuilderTests >> testTaskBlockShouldReturnACommandDeclarati
 TKTTaskItOsSubrprocessBuilderTests >> testTaskExecutionReturnsStdOutputAsResult [
 	" command: aSymbol options: anArrayOfOptions arguments: anArrayArguments"
 
-	|  future  value |
-	future := [ :spec | spec ls argument: '/'  ] asOSTask future.
+	| future value expected  |
+	future := (OSPlatform current name = #Win32
+		ifTrue: [ 
+			expected := #Users.
+			#dir command
+			   option: '/b';
+				argument: 'C:\';
+				yourself 
+		] ifFalse: [ 
+			expected := #home.
+			#ls command
+				argument: '/';
+				yourself ])
+		redirectStdoutAsResult;
+		future.
+	
 	value := (future synchronizeTimeout: 1 second) lines.
-	self assert: value  size > 1 description: ' expected at least one line as result of LS '. 
-	self assert: (value includes: 'home') description: ' ls in / in unix based system should include home '.
+	self
+		assert: value size > 1
+		description: ' expected at least one line as result of LS '.
+	self
+		assert: (value includes: expected)
+		description: ' ls in / in unix based system should include home '
 ]
