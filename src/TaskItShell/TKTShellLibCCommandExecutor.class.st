@@ -12,11 +12,11 @@ TKTShellLibCCommandExecutor >> evaluateWithStdoutAsResultOn: aCommandTask with: 
 	command := 'cd {1} & {2} {3} {4} 1> "{5}" 2> "{6}"'
 		format:
 			{aDeclaration workingDirectory fullName.
-			aDeclaration command} , 
-			(aDeclaration options ifEmpty: [ { '' } ]), 
-			(aDeclaration arguments ifEmpty: [ { '' } ]),
-					{tempResult fullName.
-					tempError fullName}.
+			aDeclaration command.
+			(' ' join: (aDeclaration options ifEmpty: [ {''} ])).
+			(' ' join: (aDeclaration arguments ifEmpty: [ {''} ])).
+			tempResult fullName.
+			tempError fullName}.
 	[ rslt := LibC runCommand: command ]
 		on: Error
 		do: [ :err | extraError := err ].

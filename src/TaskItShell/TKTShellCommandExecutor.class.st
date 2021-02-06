@@ -6,10 +6,7 @@ Class {
 
 { #category : #accessing }
 TKTShellCommandExecutor class >> default [
-	^ (self environment
-		at: #OSSUnixSubprocess
-		ifPresent: [ TKTShellOsSubprocessCommandExecutor ]
-		ifAbsent: [ TKTShellLibCCommandExecutor ]) new
+	^ TKTShellLibCCommandExecutor new
 ]
 
 { #category : #'as yet unclassified' }
